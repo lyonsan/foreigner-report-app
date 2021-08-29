@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  # アプリケーションサーバの設定
+  foreport-fpm:
+    # docker buildを行う際の現在の作業フォルダのこと。Dockerビルドの場合はDockerfileを探すためファイル名の指定は不要
+    build: ./docker/php
+    # ホスト側のディレクトリや名前付きボリュームをコンテナ側へマウントしたい時に指定する。
+    # 今回はdockerによって起動したDocker Engineが動作している仮想マシン(ホスト側)の./backendディレクトリをappサービスコンテナ内/workにマウントしている.
+    # backendディレクトリは自作する
+    volumes:
+      - ./backend:/work
+
+  foreport-nginx:
+    # アプリケーションサーバの設定
+    # nginxのイメージをそのまま使っている
+    image: nginx:1.20-alpine
+    ports:
+      # ポートの設定(ホスト側:コンテナ側)
+      - 8002:80
+    volumes:
+      # ホスト側にあるディレクトリ、ファイルをコンテナ内へマウント
+      - ./backend:/work
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /work
+
+  foreport-mysql:
+    image: mysql:8.0
+    env_file:
+      - ./.docker.env
+    environment: 
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3305:3306"
+    volumes:
+      - ./docker/db/data:/var/lib/msql/data
+volumes:
+  db-store:
