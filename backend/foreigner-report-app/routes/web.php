@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('/common/index');
-});
+Route::get('/', 'App\Http\Controllers\Common\CommonController@index')->name('common.index');
 
 Auth::routes();
 
