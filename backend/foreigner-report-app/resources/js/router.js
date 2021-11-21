@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Login from './components/login/Login.vue';
+import Home from './components/common/Home.vue';
 import ChildMain from './components/child/Main.vue';
 import ChildReport from './components/child/Report.vue';
 import ChildPareMake from './components/child/PareMake.vue';
@@ -9,11 +11,37 @@ import ParentCommunicate from './components/parent/communicate.vue';
 import TeacherMain from './components/teacher/Main.vue';
 import TeacherReport from './components/teacher/Report.vue';
 import TeacherCommunicate from './components/teacher/communicate.vue';
+import SystemError from './components/errors/System.vue';
+import store from './store';
 
 Vue.use(VueRouter);
 
 
 const routes = [
+  {
+    path:'/login',
+    name: 'login',
+    component: Login,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next('/')
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+  },
   {
     path:'/child/main',
     name: 'child.main',
@@ -58,6 +86,10 @@ const routes = [
     path:'/teacher/communicate',
     name: 'teacher.communicate',
     component: TeacherCommunicate
+  },
+  {
+    path:'/500',
+    component: SystemError
   }
 ]
 

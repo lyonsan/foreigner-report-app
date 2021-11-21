@@ -2,7 +2,7 @@
 
 @section('content')
 <div>
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
@@ -65,11 +65,11 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> --}}
 
     <div id="app">
         <!-- メインページを表示させることはできるため、そこにどのようにログイン情報を渡すか。どのようにその他CRUDを行わせるかが問題 -->
-        @auth
+        {{-- @auth
             @if( Auth::user()->user_role == 'child' )
                 <child-header-component></child-header-component>
             @endif
@@ -79,7 +79,7 @@
             @if( Auth::user()->user_role == 'parent' )
                 <parent-header-component></parent-header-component>
             @endif
-        @endauth
+        @endauth --}}
         <router-view></router-view>
     </div>
     
