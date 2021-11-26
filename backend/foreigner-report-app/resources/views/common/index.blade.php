@@ -1,8 +1,8 @@
 @extends('common.layout')
 
 @section('content')
-<div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<div>
+    {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
@@ -35,7 +35,7 @@
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->user_name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -50,20 +50,41 @@
                                 </form>
                             </div>
                         </li>
+                        <div>
+                            <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
                     @endguest
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> --}}
 
-<h1>見出し</h1>
-<button id="test_button">test</button>
+    <div id="app">
+        <!-- メインページを表示させることはできるため、そこにどのようにログイン情報を渡すか。どのようにその他CRUDを行わせるかが問題 -->
+        {{-- @auth
+            @if( Auth::user()->user_role == 'child' )
+                <child-header-component></child-header-component>
+            @endif
+            @if( Auth::user()->user_role == 'teacher' )
+                <teacher-header-component></teacher-header-component>
+            @endif
+            @if( Auth::user()->user_role == 'parent' )
+                <parent-header-component></parent-header-component>
+            @endif
+        @endauth --}}
+        <router-view></router-view>
+    </div>
+    
 @endsection
 
 @section('script')
-<script>
-    document.getElementById('test_button').onclick = function() {
-        alert('test');
-    }
-</script>
+<script src="{{ mix('/js/app.js') }}"></script>
 @endsection

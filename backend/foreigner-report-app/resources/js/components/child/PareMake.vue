@@ -1,0 +1,19 @@
+<template>
+  <div>
+    <div>
+      <p>登録されている保護者</p>
+    </div>
+    <div>
+      <p>登録されている指導者</p>
+    </div>
+    <div>
+      <button>保護者を登録する</button>
+    </div>
+    <div>
+      <button>指導者を登録する</button>
+    </div>
+  </div>
+</template>
+
+<script>
+</script>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,5 +38,24 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * ログイン後の戻り値をカスタマイズ
+     * @param Request $request リクエスト情報
+     * @param object $user ユーザー
+     */
+    public function authenticated(Request $request, $user)
+    {
+       return $user;
+    }
+
+    /**
+     * ログアウト時の戻り値をカスタマイズ
+     */
+    private function loggedOut(Request $request)
+    {
+        $request->session()->regenerate();
+        return response()->json();
     }
 }

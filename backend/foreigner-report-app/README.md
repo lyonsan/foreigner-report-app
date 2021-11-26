@@ -13,6 +13,15 @@
 | edu_org   | string      |                   |
 | user_role | string      | null: false       |
 
+## users_relationsテーブル
+
+| column          | type        |                   |
+|-----------------|-------------|-------------------|
+| id              | integer     | null: false       |
+| child_user_id   | integer     | null: false       |
+| teacher_user_id | integer     | null: false       |
+| parent_user_id  | integer     | null: false       |
+
 ユーザー新規登録画面
 ・小中学生：
 　名前、生年月日、ユーザーID、パスワード、使用言語、通っている小中学校・地域日本語教室
