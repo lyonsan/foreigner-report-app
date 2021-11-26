@@ -11,10 +11,6 @@
         :class="{'tab__item--active': tab === 2 }"
         @click="tab = 2"
       >Register</li>
-      <li
-        class="tab__item pr-3"
-        @click="logout"
-      >Logout</li>
     </ul>
     <div class="panel" v-show="tab === 1">
       <div class="row justify-content-center">
@@ -35,7 +31,7 @@
                                   <input id="login-password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" v-model="loginForm.password">
                               </div>
                           </div>
-<!-- 
+
                           <div class="form-group row">
                               <div class="col-md-6 offset-md-4">
                                   <div class="form-check">
@@ -46,7 +42,7 @@
                                       </label>
                                   </div>
                               </div>
-                          </div> -->
+                          </div>
 
                           <div class="form-group row mb-0">
                               <div class="col-md-8 offset-md-4">
@@ -188,14 +184,11 @@ export default {
           return this.$store.state.auth.apiStatus
       }
   },
-  mounted() {
-      const userSchoolElement = this.$refs.user_school_wrapper
-      const userEduOrgElement = this.$refs.user_edu_org_wrapper
-  },
   methods: {
     async login() {
       console.log('loginメソッド')
       await this.$store.dispatch('auth/login', this.loginForm)
+      // ここでcomputedのapiStatusを呼び出し、authのstateのapiStatusを返して条件分岐させる
       if (this.apiStatus) {
           this.$router.push('/')
       }
@@ -206,13 +199,16 @@ export default {
       // アクションを呼び出すためにはdispatchを使う
       await this.$store.dispatch('auth/register', this.registerForm)
 
-      // index.jsでVuexプラグインの作成を宣言したためthis.$routerでルーターオブジェクトを使える
-      this.$router.push('/')
+      if (this.apiStatus) {
+        // index.jsでVuexプラグインの作成を宣言したためthis.$routerでルーターオブジェクトを使える
+        this.$router.push('/')
+      }
+      
     },
-    async logout() {
-        await this.$store.dispatch('auth/logout')
-        this.$router.push('/login', () => {})
-    },
+    // async logout() {
+    //     await this.$store.dispatch('auth/logout')
+    //     this.$router.push('/login', () => {})
+    // },
     changeUserRole (value) {
         const userRole = this.registerForm.user_role
         const userEduOrgElement = this.$refs.user_edu_org_wrapper

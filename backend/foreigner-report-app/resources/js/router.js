@@ -5,6 +5,7 @@ import Home from './components/common/Home.vue';
 import ChildMain from './components/child/Main.vue';
 import ChildReport from './components/child/Report.vue';
 import ChildPareMake from './components/child/PareMake.vue';
+import ChildCreateReport from './components/child/CreateReport.vue'
 import ParentMain from './components/parent/Main.vue';
 import ParentReport from './components/parent/Report.vue';
 import ParentCommunicate from './components/parent/communicate.vue';
@@ -45,47 +46,122 @@ const routes = [
   {
     path:'/child/main',
     name: 'child.main',
-    component: ChildMain
+    component: ChildMain,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/child/report',
     name: 'child.report',
-    component: ChildReport
+    component: ChildReport,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+  },
+  {
+    path: '/child/create-report',
+    name: 'child.create-report',
+    component: ChildCreateReport,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/child/pare-make',
     name: 'child.pareMake',
-    component: ChildPareMake
+    component: ChildPareMake,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/parent/main',
     name: 'parent.main',
-    component: ParentMain
+    component: ParentMain,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/parent/report',
     name: 'parent.report',
-    component: ParentReport
+    component: ParentReport,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/parent/communicate',
     name: 'parent.communicate',
-    component: ParentCommunicate
+    component: ParentCommunicate,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/teacher/main',
     name: 'teacher.main',
-    component: TeacherMain
+    component: TeacherMain,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/teacher/report',
     name: 'teacher.report',
-    component: TeacherReport
+    component: TeacherReport,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/teacher/communicate',
     name: 'teacher.communicate',
-    component: TeacherCommunicate
+    component: TeacherCommunicate,
+    beforeEnter (to, from ,next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path:'/500',

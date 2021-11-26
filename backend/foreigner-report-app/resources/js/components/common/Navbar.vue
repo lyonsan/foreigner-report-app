@@ -2,16 +2,29 @@
   <nav class="navbar">
     <div class="navbar__menu">
       <span class="navbar__item">
-        username
+        あなた:{{ userName }}
       </span>
-      <div class="navbar__item">
-        <RouterLink class="button button--link" to="/login">
-          Login
-        </RouterLink>
-        <RouterLink class="button button--link" to="/register">
-          Register
-        </RouterLink>
+      <div v-if="isLoggedIn" class="navbar__item pull-right">
+        <button @click="logout">logout</button>
       </div>
     </div>
   </nav>
 </template>
+<script>
+export default {
+  methods: {
+    async logout() {
+        await this.$store.dispatch('auth/logout')
+        this.$router.push('/login', () => {})
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['auth/check']
+    },
+    userName() {
+      return this.$store.getters['auth/name']
+    }
+  }
+}
+</script>

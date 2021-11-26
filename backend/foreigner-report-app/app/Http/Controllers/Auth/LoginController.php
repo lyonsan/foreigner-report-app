@@ -47,11 +47,7 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        \Log::debug('Authチェック');
-        \Log::debug(Auth::user());
-        \Log::debug('$userチェック');
-        \Log::debug($user);
-        return $user;
+       return $user;
     }
 
     /**
