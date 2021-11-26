@@ -68,7 +68,9 @@ export default {
   methods: {
     async post() {
       await this.$store.dispatch('report/post') // この中でAPIを呼び出す
-      if (this.apiStatus)
+      if (this.apiStatus) {
+        this.$router.push('/child/report')
+      }
     }
   }
 }
