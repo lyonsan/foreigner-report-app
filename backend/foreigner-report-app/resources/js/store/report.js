@@ -16,8 +16,9 @@ const mutations = {
 
 const actions = {
   // 投稿を行う
-  async post() {
-    const response = await axios.post('/api/child-report');
+  async post(context, data) {
+    context.commit('setApiStatus', null);
+    const response = await axios.post('/api/child-report', data).catch(err => err.response || err)
     if (response.status === CREATED) {
       context.commit('setApiStatus', true)
       return false
@@ -29,4 +30,12 @@ const actions = {
       context.commit('error/setCode', response.status, { root: true })
     }
   }
+}
+
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
 }

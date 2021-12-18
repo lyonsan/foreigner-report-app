@@ -31,3 +31,5 @@ Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name
 Route::get('/user', function () {
     return Auth::user();
 })->name('user');
+
+Route::post('/child-report', 'App\Http\Controllers\Api\ReportController@childPost')->name('childpost');
