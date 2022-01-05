@@ -40,7 +40,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const createApp = async () => {
     await store.dispatch('auth/currentUser')
-    console.log('createApp');
     new Vue({
         el: '#app',
         router,
