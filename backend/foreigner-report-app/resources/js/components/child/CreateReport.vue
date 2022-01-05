@@ -37,7 +37,7 @@
                                     <label for="subject6">日本語</label>
                                     <input id="subject6" type="checkbox" class="form-control @error('subject6') is-invalid @enderror" name="subject[]" v-model="postForm.subject6" autocomplete="subject6" value="6">
 
-                                    <label for="subject7">日本語</label>
+                                    <label for="subject7">その他</label>
                                     <input id="subject7" type="checkbox" class="form-control @error('subject7') is-invalid @enderror" name="subject[]" v-model="postForm.subject7" autocomplete="subject7" value="7">
                                 </div>
                             </div>

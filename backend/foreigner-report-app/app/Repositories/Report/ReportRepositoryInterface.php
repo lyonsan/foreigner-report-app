@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Repositories\Report;
-use App\Models\Report;
 
 interface ReportRepositoryInterface
 {

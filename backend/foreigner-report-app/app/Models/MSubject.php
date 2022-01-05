@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class MSubject extends Model
 {
-    use HasFactory;
+    /**
+     * m_subject_reportsテーブルとの1対多のリレーション
+     */
+    public function mSubjectReports()
+    {
+        return $this->hasMany(MSubjectReport::class);
+    }
 }
