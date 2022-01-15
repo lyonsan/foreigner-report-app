@@ -46,7 +46,7 @@
                                 <label for="text_name_first" class="col-md-4 col-form-label text-md-right">使った教材1</label>
 
                                 <div class="col-md-6">
-                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" autocomplete="text_name_first">
+                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" v-on:input="searchText" autocomplete="text_name_first">
                                 </div>
                             </div>
 
@@ -55,7 +55,7 @@
                                 <label for="text_name_second" class="col-md-4 col-form-label text-md-right">使った教材2</label>
 
                                 <div class="col-md-6">
-                                    <input id="text_name_second" type="text" class="form-control @error('text_name_second') is-invalid @enderror" name="text_name_second" v-model="postForm.text_name_second" autocomplete="text_name_second">
+                                    <input id="text_name_second" type="text" class="form-control @error('text_name_second') is-invalid @enderror" name="text_name_second" v-model="postForm.text_name_second" v-on:input="searchText" autocomplete="text_name_second">
                                 </div>
                             </div>
 
@@ -138,6 +138,7 @@ export default {
         subject7: false,
         text_name_first: null,
         text_name_second: null,
+        searchWord: null,
         new_text_name_first: null,
         new_text_name_second: null,
         other_materials: null,
@@ -159,6 +160,17 @@ export default {
       if (this.apiStatus) {
         this.$router.push('/child/report')
       }
+    },
+    searchText: function(e) {
+      this.searchWord = document.getElementById("text_name_first").value;
+      axios.get('/api/text-serach', {
+        params: {
+          text_name: null
+        }
+      })
+      .then(response => {
+        
+      })
     }
   }
 }

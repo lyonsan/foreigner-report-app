@@ -14,4 +14,15 @@ class MSubject extends Model
     {
         return $this->hasMany(MSubjectReport::class);
     }
+
+    /**
+     * m_subjectsとの多対多のリレーション
+     */
+    public function reports()
+    {
+        return $this->belongsToMany('App\Models\Report',
+                                    'm_subject_reports',
+                                    'report_id',
+                                    'subject_id');
+    }
 }
