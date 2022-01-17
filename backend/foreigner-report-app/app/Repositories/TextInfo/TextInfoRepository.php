@@ -32,9 +32,21 @@ class TextInfoRepository implements TextInfoRepositoryInterface
    * @param string $textName 参考書名
    * @return object $textId 参考書ID
    */
-  public function getId($textName)
+  public function getId($textName): object
   {
     return $this->model->where('text_name', $textName)
                        ->pluck('id');
+  }
+
+  /**
+   * 教材を教材名で検索する
+   * @param string $textName 参考書名
+   * @return object $textList 参考書リスト
+   */
+  public function searchText($textName): object
+  {
+    return $this->model->select('text_name')
+                       ->where('text_name', 'LIKE', "%". $textName ."%")
+                       ->get();
   }
 }

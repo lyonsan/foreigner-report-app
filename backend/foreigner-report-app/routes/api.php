@@ -35,3 +35,4 @@ Route::get('/user', function () {
 Route::post('/child-report', 'App\Http\Controllers\Api\ReportController@childPost')->name('childpost');
 Route::get('/get-motivation-config', 'App\Http\Controllers\Api\ReportController@getMotivationConf')->name('getMotivationConf');
 Route::get('/get-report', 'App\Http\Controllers\Api\ReportController@getReport')->name('getChildReport');
+Route::get('/text-search', 'App\Http\Controllers\Api\TextInfoController@searchText')->name('searchText');

@@ -74,10 +74,9 @@ class ReportController extends Controller
     public function getReport(Request $request)
     {
         $userId = $request->userId;
-        $reportListObj = $this->reportService->getReportList($userId);
-        // return response()->json($reportList, 200, [], JSON_UNESCAPED_UNICODE);
+        $reportList = $this->reportService->getReportList($userId);
         $result = [
-            'reports' => $reportListObj
+            'reports' => $reportList
         ];
         return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
     }

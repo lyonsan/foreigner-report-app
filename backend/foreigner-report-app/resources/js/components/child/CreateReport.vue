@@ -46,7 +46,16 @@
                                 <label for="text_name_first" class="col-md-4 col-form-label text-md-right">使った教材1</label>
 
                                 <div class="col-md-6">
-                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" v-on:input="searchText" autocomplete="text_name_first">
+                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" v-on:input="inputSearchWord" autocomplete="text_name_first">
+                                    <div v-bind:class="{ textsWrap: texts.length != 0 }">
+                                      <div v-for="(text, index) in texts" v-on:click="select(text.text_name)">
+                                        <div v-if="index < 10" class="item" v-bind:class="{ isEven: index%2 == 1 }">
+                                          <p>
+                                            {{ text.text_name }}
+                                          </p>
+                                      </div>
+                                      </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -138,7 +147,6 @@ export default {
         subject7: false,
         text_name_first: null,
         text_name_second: null,
-        searchWord: null,
         new_text_name_first: null,
         new_text_name_second: null,
         other_materials: null,
@@ -146,7 +154,18 @@ export default {
         note: null,
         user_id: null,
       },
+      searchWord: '',
+      texts: []
     }
+  },
+  watch: {
+    // この関数は searchWord が変わるごとに実行されます。
+    searchWord: function (newSearchWord, oldSearchWord) {
+      this.searchTextWithInterval()
+    }
+  },
+  created: function () {
+    this.searchTextWithInterval = _.throttle(this.searchText, 500)
   },
   computed: {
     getUserId() {
@@ -161,17 +180,50 @@ export default {
         this.$router.push('/child/report')
       }
     },
+    inputSearchWord: function() {
+      this.searchWord = document.getElementById("text_name_first").value
+    },
     searchText: function(e) {
-      this.searchWord = document.getElementById("text_name_first").value;
-      axios.get('/api/text-serach', {
-        params: {
-          text_name: null
-        }
-      })
-      .then(response => {
-        
-      })
+      if (this.searchWord == '') {
+        this.texts = []
+      } else {
+        axios.get('/api/text-search', {
+          params: {
+            text_name: this.searchWord
+          }
+        })
+        .then(function (response) {
+          console.log(response.data.text_infos)
+          this.texts = response.data.text_infos
+        }.bind(this))
+      }
+    },
+    select: function (textName) {
+        this.postForm.text_name_first = textName;
+        this.texts = []
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#text_name_first {
+  position: absolute;
+}
+
+.textsWrap{
+    position: relative;
+    top: 30px;
+    width: 304px;
+    border: solid 1px #000000;
+    z-index: 10;
+}
+
+.item p{
+    margin: 0px;
+}
+
+.isEven{
+    background-color: #dddddd;
+}
+</style>
