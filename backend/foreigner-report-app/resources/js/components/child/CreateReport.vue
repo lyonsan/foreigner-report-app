@@ -46,9 +46,9 @@
                                 <label for="text_name_first" class="col-md-4 col-form-label text-md-right">使った教材1</label>
 
                                 <div class="col-md-6">
-                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" v-on:input="inputSearchWord" autocomplete="text_name_first">
-                                    <div v-bind:class="{ textsWrap: texts.length != 0 }">
-                                      <div v-for="(text, index) in texts" v-on:click="select(text.text_name)">
+                                    <input id="text_name_first" type="text" class="form-control @error('text_name_first') is-invalid @enderror" name="text_name_first" v-model="postForm.text_name_first" v-on:input="inputSearchWord('text_name_first')" autocomplete="text_name_first">
+                                    <div v-bind:class="{ textsWrap: texts_first.length != 0 }">
+                                      <div v-for="(text, index) in texts_first" v-on:click="select(text.text_name, 'text_name_first')">
                                         <div v-if="index < 10" class="item" v-bind:class="{ isEven: index%2 == 1 }">
                                           <p>
                                             {{ text.text_name }}
@@ -64,7 +64,16 @@
                                 <label for="text_name_second" class="col-md-4 col-form-label text-md-right">使った教材2</label>
 
                                 <div class="col-md-6">
-                                    <input id="text_name_second" type="text" class="form-control @error('text_name_second') is-invalid @enderror" name="text_name_second" v-model="postForm.text_name_second" v-on:input="searchText" autocomplete="text_name_second">
+                                    <input id="text_name_second" type="text" class="form-control @error('text_name_second') is-invalid @enderror" name="text_name_second" v-model="postForm.text_name_second" v-on:input="inputSearchWord('text_name_second')" autocomplete="text_name_second">
+                                    <div v-bind:class="{ textsWrap: texts_second.length != 0 }">
+                                      <div v-for="(text, index) in texts_second" v-on:click="select(text.text_name, 'text_name_second')">
+                                        <div v-if="index < 10" class="item" v-bind:class="{ isEven: index%2 == 1 }">
+                                          <p>
+                                            {{ text.text_name }}
+                                          </p>
+                                      </div>
+                                      </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -155,52 +164,90 @@ export default {
         user_id: null,
       },
       searchWord: '',
-      texts: []
+      searchWordOne: '',
+      searchWordTwo: '',
+      texts_first: [],
+      texts_second: []
     }
   },
   watch: {
-    // この関数は searchWord が変わるごとに実行されます。
-    searchWord: function (newSearchWord, oldSearchWord) {
-      this.searchTextWithInterval()
+    // ここで二つの変数をwatchしようとしてエラーが生じている様子
+    // searchWordOne: function () {
+    //   this.searchTextOneWithInterval()
+    // },
+    // searchWordTwo: function () {
+    //   this.searchTextTwoWithInterval()
+    // }
+    _allWatch(value, oldValue) {
+      console.log(value, oldValue)
+      if (value[0] != oldValue[0]) {
+        this.searchText('text_name_first')
+      } else if (value[1] != oldValue[1]) {
+        this.searchText('text_name_second')
+      }
     }
   },
   created: function () {
-    this.searchTextWithInterval = _.throttle(this.searchText, 500)
+    this.searchTextOneWithInterval = _.throttle(this.searchText('text_name_first'), 500)
+    this.searchTextTwoWithInterval = _.throttle(this.searchText('text_name_second'), 500)
   },
   computed: {
     getUserId() {
       return this.$store.getters['auth/id']
+    },
+    _allWatch() {
+      return [this.$data.searchWordOne, this.$data.searchWordTwo]
     }
   },
   methods: {
     async createReport() {
       this.postForm.user_id = this.getUserId
-      await this.$store.dispatch('report/post', this.postForm) // この中でAPIを呼び出す
+      await this.$store.dispatch('report/post', this.postForm)
       if (this.apiStatus) {
         this.$router.push('/child/report')
       }
     },
-    inputSearchWord: function() {
-      this.searchWord = document.getElementById("text_name_first").value
+    inputSearchWord: function(text_name) {
+      if (text_name == 'text_name_first') {
+        this.searchWordOne = document.getElementById(text_name).value
+      } else if (text_name == 'text_name_second') {
+        this.searchWordTwo = document.getElementById(text_name).value
+      }
     },
-    searchText: function(e) {
-      if (this.searchWord == '') {
-        this.texts = []
+    searchText: function(text_name) {
+      if (this.searchWordOne == '' && text_name == 'text_name_first') {
+        this.texts_first = []
+      } else if (this.searchWordTwo == '' && text_name == 'text_name_second') {
+        this.texts_second = []
       } else {
+        if (text_name == 'text_name_first') {
+          this.searchWord = this.searchWordOne
+        } else if (text_name == 'text_name_second') {
+          this.searchWord = this.searchWordTwo
+        }
         axios.get('/api/text-search', {
           params: {
-            text_name: this.searchWord
+            text_name: this.searchWord // これでは呼び出せない
           }
         })
         .then(function (response) {
           console.log(response.data.text_infos)
-          this.texts = response.data.text_infos
+          if (text_name == 'text_name_first') {
+            this.texts_first = response.data.text_infos
+          } else if (text_name == 'text_name_second') {
+            this.texts_second = response.data.text_infos
+          }
         }.bind(this))
       }
     },
-    select: function (textName) {
+    select: function (textName, textNameNum) {
+      if (textNameNum == 'text_name_first') {
         this.postForm.text_name_first = textName;
-        this.texts = []
+        this.texts_first = []
+      } else if (textNameNum == 'text_name_second') {
+        this.postForm.text_name_second = textName;
+        this.texts_second = []
+      }
     }
   }
 }
