@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class TextInfo extends Model
 {
-    use HasFactory;
+    /**
+     * reportsテーブルとの多対多のリレーション
+     */
+    public function reports()
+    {
+        return $this->belongsToMany('App\Models\Report',
+                                    'report_text_infos',
+                                    'report_id',
+                                    'text_id');
+    }
 }

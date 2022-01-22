@@ -13,7 +13,7 @@
       <router-link v-bind:to="{name: 'child.report'}">
         <button class="btn btn-success">プロフィールを編集する</button>
       </router-link>
-      <router-link v-bind:to="{name: 'child.report'}">
+      <router-link v-bind:to="{name: 'child.setting'}">
         <button class="btn btn-success">設定</button>
       </router-link>
     </div>

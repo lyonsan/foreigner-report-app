@@ -54,13 +54,30 @@ class ReportController extends Controller
     }
 
     /**
+     * 今日の気分のリスト取得
+     * @return JsonResponse
+     */
+    public function getMotivationConf()
+    {
+        $motivationList = config('report.motivation');
+        $result = [
+            'motivation' => $motivationList
+        ];
+        return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * 子供の学習記録を表示する
      * @param int $userId （子供の）ユーザーID
      * @return JsonResponse
      */
-    public function getReport(int $userId)
+    public function getReport(Request $request)
     {
+        $userId = $request->userId;
         $reportList = $this->reportService->getReportList($userId);
-        return response()->json($reportList, 200, [], JSON_UNESCAPED_UNICODE);
+        $result = [
+            'reports' => $reportList
+        ];
+        return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
     }
 }

@@ -86,11 +86,12 @@ class ReportService
   /**
    * 学習報告の一覧を取得する
    * @param int $userId ユーザーID
-   * @return array 学習報告のリスト
+   * @return object 学習報告のリスト
    */
-  public function getReportList(int $userId): array
+  public function getReportList(int $userId): object
   {
-    // 
+    $reportList = $this->reportRepository->getReports($userId);
+    return $reportList;
   }
 
   /**
