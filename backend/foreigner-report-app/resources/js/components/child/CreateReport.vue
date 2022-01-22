@@ -171,13 +171,6 @@ export default {
     }
   },
   watch: {
-    // ここで二つの変数をwatchしようとしてエラーが生じている様子
-    // searchWordOne: function () {
-    //   this.searchTextOneWithInterval()
-    // },
-    // searchWordTwo: function () {
-    //   this.searchTextTwoWithInterval()
-    // }
     _allWatch(value, oldValue) {
       console.log(value, oldValue)
       if (value[0] != oldValue[0]) {
@@ -187,10 +180,10 @@ export default {
       }
     }
   },
-  created: function () {
-    this.searchTextOneWithInterval = _.throttle(this.searchText('text_name_first'), 500)
-    this.searchTextTwoWithInterval = _.throttle(this.searchText('text_name_second'), 500)
-  },
+  // created: function () {
+  //   this.searchTextOneWithInterval = _.throttle(this.searchText('text_name_first'), 500)
+  //   this.searchTextTwoWithInterval = _.throttle(this.searchText('text_name_second'), 500)
+  // },
   computed: {
     getUserId() {
       return this.$store.getters['auth/id']
